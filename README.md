@@ -1,4 +1,4 @@
-# 📊 RPA API Automation - Projeto Final
+# 📊 RPA API Automation
 
 Automação com Python para coleta, armazenamento, processamento e envio automatizado de dados obtidos via API pública.  
 Este projeto foi desenvolvido como avaliação final da disciplina de Robotic Process Automation (RPA).
@@ -39,5 +39,33 @@ Criar um sistema automatizado que integra:
 
 ---
 
-## 📦 Estrutura do Projeto
+## 🚀 Execução
 
+1. Baixe o projeto de repositório
+``` bash
+git clone https://github.com/Miguel-ectil/rpa_api_automation.git
+```
+
+2. Instale os pacotes necessários (em um ambiente virtual recomendado):
+```bash
+pip install requests yagmail
+```
+3. Edite o arquivo projeto_rpa.py com:
+
+- Seu e-mail Gmail
+
+- Senha de app gerada
+
+- E-mail de destino (pode ser o mesmo)
+
+```bash
+  python projeto_rpa.py
+```
+
+## 📧 Exemplo de Conteúdo do E-mail
+
+Relatório RPA - Conselho Aleatório
+
+Conselho: True happiness always resides in the quest.
+Padrões Identificados: Nenhum padrão identificado
+Data/Hora da coleta: 2025-06-07 23:48:01
