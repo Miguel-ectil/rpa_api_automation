@@ -6,8 +6,6 @@ Este projeto foi desenvolvido como avaliação final da disciplina de Robotic Pr
 ## 👤 Autor
 
 - **Nome:** Miguel Ectil  
-- **Curso:** [Seu curso aqui]  
-- **Instituição:** Faculdade Impacta  
 - **Data:** Junho de 2025
 
 ---
