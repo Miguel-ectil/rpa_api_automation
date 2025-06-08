@@ -5,61 +5,56 @@ import yagmail
 import datetime
 
 # === CONFIGURAÇÕES ===
-API_KEY = '42cdbc8f8c957332c3ea430f032f1004'
-CIDADE = 'Guarulhos'
-EMAIL_DESTINO = 'ectilmiguelmiguelectil@gmail.com'
-EMAIL_ORIGEM = 'miguel.ectil@aluno.faculdadeimpacta.com.br'
-EMAIL_SENHA = 'hijv lwbw psbj mgbt'
+EMAIL_ORIGEM = 'ectilmiguelmiguelectil@gmail.com'
+EMAIL_SENHA = 'vhhf nnuq fpss bkrs'
+EMAIL_DESTINO = 'miguel.ectil@aluno.faculdadeimpacta.com.br'
 
 # === ETAPA 1: Coleta de Dados via API ===
-url = f'https://api.openweathermap.org/data/2.5/weather?q={CIDADE}&appid={API_KEY}&units=metric&lang=pt_br'
+url = 'https://api.adviceslip.com/advice'
+print("Requisitando conselho da API...")
 response = requests.get(url)
 data = response.json()
 
-temperatura = data['main']['temp']
-descricao = data['weather'][0]['description']
-umidade = data['main']['humidity']
+# Pegando o conselho
+conselho = data['slip']['advice']
+print("Conselho coletado:", conselho)
 
 # === ETAPA 2: Armazenamento no Banco de Dados ===
 conn = sqlite3.connect('projeto_rpa.db')
 cursor = conn.cursor()
 
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS dados_climaticos (
+CREATE TABLE IF NOT EXISTS conselhos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cidade TEXT,
-    temperatura REAL,
-    descricao TEXT,
-    umidade INTEGER,
+    conselho TEXT,
     data_hora TEXT
 )
 ''')
 
 data_hora = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 cursor.execute('''
-INSERT INTO dados_climaticos (cidade, temperatura, descricao, umidade, data_hora)
-VALUES (?, ?, ?, ?, ?)
-''', (CIDADE, temperatura, descricao, umidade, data_hora))
+INSERT INTO conselhos (conselho, data_hora)
+VALUES (?, ?)
+''', (conselho, data_hora))
 conn.commit()
 
 # === ETAPA 3: Processamento com Regex ===
-match = re.findall(r'chuva|nublado|ensolarado|céu limpo', descricao.lower())
+match = re.findall(r'vida|tempo|felicidade|sabedoria|trabalho|amor', conselho.lower())
 padrao = ', '.join(match) if match else 'Nenhum padrão identificado'
 
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS dados_processados (
+CREATE TABLE IF NOT EXISTS conselhos_processados (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    cidade TEXT,
-    descricao_original TEXT,
+    conselho_original TEXT,
     padrao_encontrado TEXT,
     data_hora TEXT
 )
 ''')
 
 cursor.execute('''
-INSERT INTO dados_processados (cidade, descricao_original, padrao_encontrado, data_hora)
-VALUES (?, ?, ?, ?)
-''', (CIDADE, descricao, padrao, data_hora))
+INSERT INTO conselhos_processados (conselho_original, padrao_encontrado, data_hora)
+VALUES (?, ?, ?)
+''', (conselho, padrao, data_hora))
 conn.commit()
 conn.close()
 
@@ -67,19 +62,17 @@ conn.close()
 yag = yagmail.SMTP(user=EMAIL_ORIGEM, password=EMAIL_SENHA)
 
 conteudo = f"""
-Relatório RPA - Dados Climáticos de {CIDADE}
+Relatório RPA - Conselho Aleatório
 
-Temperatura: {temperatura}°C
-Descrição: {descricao}
-Umidade: {umidade}%
-Padrões Climatológicos Detectados: {padrao}
+Conselho: {conselho}
+Padrões Identificados: {padrao}
 Data/Hora da coleta: {data_hora}
 """
 
 yag.send(
     to=EMAIL_DESTINO,
-    subject='[RPA] Relatório Climático Automatizado - Guarulhos',
+    subject='[RPA] Relatório Automatizado de Conselho Aleatório',
     contents=conteudo
 )
 
-print("E-mail enviado com sucesso!")
+print("✅ E-mail enviado com sucesso!")
