@@ -4,6 +4,7 @@ import re
 import yagmail
 import datetime
 
+# === CONFIGURAÇÕES ===
 API_KEY = 'SUA_CHAVE_API_AQUI'
 CIDADE = 'Guarulhos'
 EMAIL_DESTINO = 'seudominio@gmail.com'
@@ -41,4 +42,24 @@ VALUES (?, ?, ?, ?, ?)
 ''', (CIDADE, temperatura, descricao, umidade, data_hora))
 conn.commit()
 
+# === ETAPA 3: Processamento com Regex ===
+match = re.findall(r'chuva|nublado|ensolarado|céu limpo', descricao.lower())
+padrao = ', '.join(match) if match else 'Nenhum padrão identificado'
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS dados_processados (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cidade TEXT,
+    descricao_original TEXT,
+    padrao_encontrado TEXT,
+    data_hora TEXT
+)
+''')
+
+cursor.execute('''
+INSERT INTO dados_processados (cidade, descricao_original, padrao_encontrado, data_hora)
+VALUES (?, ?, ?, ?)
+''', (CIDADE, descricao, padrao, data_hora))
+conn.commit()
+conn.close()
 
