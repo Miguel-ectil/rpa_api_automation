@@ -15,11 +15,9 @@ print("Requisitando conselho da API...")
 response = requests.get(url)
 data = response.json()
 
-# Pegando o conselho
 conselho = data['slip']['advice']
 print("Conselho coletado:", conselho)
 
-# === ETAPA 2: Armazenamento no Banco de Dados ===
 conn = sqlite3.connect('projeto_rpa.db')
 cursor = conn.cursor()
 
