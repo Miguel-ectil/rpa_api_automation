@@ -5,11 +5,11 @@ import yagmail
 import datetime
 
 # === CONFIGURAÇÕES ===
-API_KEY = 'SUA_CHAVE_API_AQUI'
+API_KEY = '42cdbc8f8c957332c3ea430f032f1004'
 CIDADE = 'Guarulhos'
-EMAIL_DESTINO = 'seudominio@gmail.com'
-EMAIL_ORIGEM = 'seudominio@gmail.com'
-EMAIL_SENHA = 'SUA_SENHA_DE_APP'
+EMAIL_DESTINO = 'ectilmiguelmiguelectil@gmail.com'
+EMAIL_ORIGEM = 'miguel.ectil@aluno.faculdadeimpacta.com.br'
+EMAIL_SENHA = 'hijv lwbw psbj mgbt'
 
 # === ETAPA 1: Coleta de Dados via API ===
 url = f'https://api.openweathermap.org/data/2.5/weather?q={CIDADE}&appid={API_KEY}&units=metric&lang=pt_br'
