@@ -63,3 +63,23 @@ VALUES (?, ?, ?, ?)
 conn.commit()
 conn.close()
 
+# === ETAPA 4: Envio de E-mail ===
+yag = yagmail.SMTP(user=EMAIL_ORIGEM, password=EMAIL_SENHA)
+
+conteudo = f"""
+Relatório RPA - Dados Climáticos de {CIDADE}
+
+Temperatura: {temperatura}°C
+Descrição: {descricao}
+Umidade: {umidade}%
+Padrões Climatológicos Detectados: {padrao}
+Data/Hora da coleta: {data_hora}
+"""
+
+yag.send(
+    to=EMAIL_DESTINO,
+    subject='[RPA] Relatório Climático Automatizado - Guarulhos',
+    contents=conteudo
+)
+
+print("E-mail enviado com sucesso!")
